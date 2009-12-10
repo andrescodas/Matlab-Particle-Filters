@@ -1,7 +1,8 @@
 close all
 clear all;
 figure(1)
-[positionsXM,positionsYM,positionsTM] = readPositionFile('mocapPositionSet.txt');
+
+[positionsXM,positionsYM,positionsTM] = readPositionFile('../mocapPositionSet.txt');
 positionsXMD = positionsXM - [0 positionsXM(1:(length((positionsXM))-1))];
 positionsYMD = positionsYM - [0 positionsYM(1:(length((positionsYM))-1))];
 positionsTMD = positionsTM - [0 positionsTM(1:(length((positionsTM))-1))];
@@ -9,14 +10,14 @@ positionsTMD = positionsTM - [0 positionsTM(1:(length((positionsTM))-1))];
 subplot(3,1,1)
 hold off
 plot(positionsXM,positionsYM,'h',positionsXM,positionsYM)
-
+xlim([-1.5 3])
 hold all
 %
 % r = 0.5*ones(size(positionsTM));
 % [u,v] = pol2cart(positionsTM+pi/2,r);
 % quiver(positionsXM,positionsYM,u,v);
 
-[positionsXO,positionsYO,positionsTO] = readPositionFile('rflexPositionSet.txt');
+[positionsXO,positionsYO,positionsTO] = readPositionFile('../rflexPositionSet.txt');
 grid
 subplot(3,1,2)
 plot(positionsXO,positionsYO,'o',positionsXO,positionsYO)
@@ -159,79 +160,86 @@ f = getframe;
 frames = repmat(f,1,numberOfFiles);
 
 numToPlot = inf;
-for i = 1:numberOfFiles*0
 
-   % input(strcat('Step = ',num2str(i),' Plot initStep?'))
-   
-    figure();
- 
-  
-    hold off
-    simulations = [];
-    file =strcat('initStep',num2str(i));
-    eval(file);
-    initStep = simulations;
-    for j = 1:min(size(simulations(1).pos,1),numToPlot)
-        plot(simulations(1).pos(j,1),simulations(1).pos(j,2),'b.');
-        hold all
-        %%[u,v] = pol2cart(simulations.pos(i,3),0.01);
-        %%quiver(simulations(1).pos(j,1),simulations(1).pos(j,2),u,v,'b');
-    end
-   xlim([minX,maxX]);
-   ylim([minY,maxY]);
-   grid
-   % input(strcat('Step = ',num2str(i),'Plot afterOdometry?'))
-    
-    simulations = [];
-    file =strcat('afterOdometry',num2str(i));
-    eval(file);
-    for j = 1:min(size(simulations(1).pos,1),numToPlot)
-        plot(simulations(1).pos(j,1),simulations(1).pos(j,2),'ko');
-        %%[u,v] = pol2cart(simulations.pos(i,3),0.01);
-        %%quiver(simulations(1).pos(j,1),simulations(1).pos(j,2),u,v,'k');
-    end
-
-    
-    
-    file =strcat('afterWeight',num2str(i));
-    eval(file);
-
-    sumWeights = sum(particules.pos(:,4));
-    display(strcat('Sum of weights == ',num2str(sumWeights)));
-    weightPos = particules.pos;
-
-    file =strcat('afterNormalize',num2str(i));
-    eval(file);
-
-    %     for j = 1:size(simulations(1).pos,1)
-    %
-    %         if(particules.pos(j,1:3) ~= weightPos(j,1:3))
-    %             warining('not same particule')
-    %         elseif(sumWeights == 0)
-    %
-    %         elseif(abs(particules.pos(j,4)-weightPos(j,4)/sumWeights) > 10^-5 )
-    %             warining('notWell weighted')
-    %         else
-    %            %display(strcat(num2str(i),' sum weights ~= 0'));
-    %
-    %         end
-    %     end
-
-%     input(strcat('Step = ',num2str(i),'Plot afterResample?'))
-    
-    simulations = [];
-    file =strcat('afterResample',num2str(i));
-    eval(file);
-    for j = 1:min(size(simulations(1).pos,1),numToPlot)
-        plot(simulations(1).pos(j,1),simulations(1).pos(j,2),'r*');
-        %%[u,v] = pol2cart(simulations.pos(i,3),0.01);
-        %%quiver(simulations(1).pos(j,1),simulations(1).pos(j,2),u,v,'r');
-    end
-
-    frames(i) = getframe;
-
-end
-cond = input('Save frames (1/0)');
+cond = input('Plot Frames (1/0)');
 if( cond == 1 )
-    save frames frames
+
+   figure()
+    for i = 1:numberOfFiles
+
+        % input(strcat('Step = ',num2str(i),' Plot initStep?'))
+
+        
+
+
+        hold off
+        simulations = [];
+        file =strcat('initStep',num2str(i));
+        eval(file);
+        initStep = simulations;
+        for j = 1:min(size(simulations(1).pos,1),numToPlot)
+            plot(simulations(1).pos(j,1),simulations(1).pos(j,2),'b.');
+            hold all
+            %%[u,v] = pol2cart(simulations.pos(i,3),0.01);
+            %%quiver(simulations(1).pos(j,1),simulations(1).pos(j,2),u,v,'b');
+        end
+        xlim([minX,maxX]);
+        ylim([minY,maxY]);
+        grid
+        % input(strcat('Step = ',num2str(i),'Plot afterOdometry?'))
+
+        simulations = [];
+        file =strcat('afterOdometry',num2str(i));
+        eval(file);
+        for j = 1:min(size(simulations(1).pos,1),numToPlot)
+            plot(simulations(1).pos(j,1),simulations(1).pos(j,2),'ko');
+            %%[u,v] = pol2cart(simulations.pos(i,3),0.01);
+            %%quiver(simulations(1).pos(j,1),simulations(1).pos(j,2),u,v,'k');
+        end
+
+
+
+        file =strcat('afterWeight',num2str(i));
+        eval(file);
+
+        sumWeights = sum(particules.pos(:,4));
+        display(strcat('Sum of weights == ',num2str(sumWeights)));
+        weightPos = particules.pos;
+
+        file =strcat('afterNormalize',num2str(i));
+        eval(file);
+
+        %     for j = 1:size(simulations(1).pos,1)
+        %
+        %         if(particules.pos(j,1:3) ~= weightPos(j,1:3))
+        %             warining('not same particule')
+        %         elseif(sumWeights == 0)
+        %
+        %         elseif(abs(particules.pos(j,4)-weightPos(j,4)/sumWeights) > 10^-5 )
+        %             warining('notWell weighted')
+        %         else
+        %            %display(strcat(num2str(i),' sum weights ~= 0'));
+        %
+        %         end
+        %     end
+
+        %     input(strcat('Step = ',num2str(i),'Plot afterResample?'))
+
+        simulations = [];
+        file =strcat('afterResample',num2str(i));
+        eval(file);
+        for j = 1:min(size(simulations(1).pos,1),numToPlot)
+            plot(simulations(1).pos(j,1),simulations(1).pos(j,2),'r*');
+            %%[u,v] = pol2cart(simulations.pos(i,3),0.01);
+            %%quiver(simulations(1).pos(j,1),simulations(1).pos(j,2),u,v,'r');
+        end
+
+        frames(i) = getframe;
+
+    end
+    cond = input('Save frames (1/0)');
+    if( cond == 1 )
+        save frames frames
+    end
+
 end
