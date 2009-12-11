@@ -23,7 +23,7 @@ for j = 1:length(inferingTags)
             toPlot = inferingTags(j).particuleSet(k).position * rotationMatrix + translation;
             plot(toPlot(1),toPlot(2),strcat('g','.'));
         end
-        toPlot = inferingTags(j).estimatedPosition * rotationMatrix + translation;
+        toPlot = inferingTags(j).position * rotationMatrix + translation;
         plot(toPlot(1),toPlot(2),strcat('b','o'))
 
     else
@@ -36,7 +36,7 @@ for j = 1:length(inferingTags)
         for k = 2:length(inferingTags(j).particuleSet)
             plot(inferingTags(j).particuleSet(k).position(1),inferingTags(j).particuleSet(k).position(2),strcat('g','.'));
         end
-        plot(inferingTags(j).estimatedPosition(1),inferingTags(j).estimatedPosition (2),strcat('b','o'))
+        plot(inferingTags(j).position(1),inferingTags(j).position (2),strcat('b','o'))
         
         
     end

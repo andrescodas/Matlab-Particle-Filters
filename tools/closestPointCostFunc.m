@@ -15,9 +15,9 @@ devrot = [-sinr -cosr;cosr -sinr];
 grad = [0;0;0];
 
 for i = 1:length(realTags)
-    cost = cost + 2*(translation-realTags(i).position)*rot*inferredTags(i).estimatedPosition' + translation*(translation'-2*realTags(i).position');
-    grad(2:3) = grad(2:3) + rot*inferredTags(i).estimatedPosition' + translation' - realTags(i).position';
-    grad(1) = grad(1) + (translation-realTags(i).position)*devrot*inferredTags(i).estimatedPosition';
+    cost = cost + 2*(translation-realTags(i).position)*rot*inferredTags(i).position' + translation*(translation'-2*realTags(i).position');
+    grad(2:3) = grad(2:3) + rot*inferredTags(i).position' + translation' - realTags(i).position';
+    grad(1) = grad(1) + (translation-realTags(i).position)*devrot*inferredTags(i).position';
 
 end
 

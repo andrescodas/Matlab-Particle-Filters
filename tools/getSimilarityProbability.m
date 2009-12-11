@@ -10,7 +10,7 @@ if(nargin < 6) % excludeDetection not defined
     for it = 1:length(inferingTags)
         for a = 0:antennas-1
     
-            [distance,angleRadians] =  getRelativePosition(robotPosition,inferingTags(it).estimatedPosition,a);
+            [distance,angleRadians] =  getRelativePosition(robotPosition,inferingTags(it).position,a);
         
             likelihoodAntennaTag = getDetectionProbabilityPolar(polarDetectionModel,distance,angleRadians);
         
@@ -21,6 +21,10 @@ if(nargin < 6) % excludeDetection not defined
                 else
                     p = p*(1 - likelihoodAntennaTag);
                 end
+                if(p == 0)
+                    return;
+                end
+                
             varDetections = [varDetections(1:k-1) varDetections(k+1:length(varDetections))];
         end   
     end    
@@ -33,7 +37,7 @@ else
             
             if(~((inferingTags(it).tagId == excludeDetection.tagId) && (a == excludeDetection.antenna)))
               
-                [distance,angleRadians] =  getRelativePosition(robotPosition,inferingTags(it).estimatedPosition,a);
+                [distance,angleRadians] =  getRelativePosition(robotPosition,inferingTags(it).position,a);
         
                 likelihoodAntennaTag = getDetectionProbabilityPolar(polarDetectionModel,distance,angleRadians);
         

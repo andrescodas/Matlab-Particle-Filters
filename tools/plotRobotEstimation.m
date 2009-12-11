@@ -6,7 +6,7 @@ hold off
 
 for j = 1:length(inferingTags)
 	
-    plot(inferingTags(j).estimatedPosition(1),inferingTags(j).estimatedPosition(2),strcat('b','o'))
+    plot(inferingTags(j).position(1),inferingTags(j).position(2),strcat('b','o'))
     if (j == 1)
         hold all;
     end
@@ -22,9 +22,9 @@ for k = 1:length(robotByParticules.particuleSet)
     quiver(robotByParticules.particuleSet(k).position(1),robotByParticules.particuleSet(k).position(2),u,v);
 end
 
-plot(robotByParticules.estimatedPosition(1),robotByParticules.estimatedPosition(2),strcat('k','o'))
-    [u,v] = pol2cart(robotByParticules.estimatedPosition(3),0.5);
-    quiver(robotByParticules.estimatedPosition(1),robotByParticules.estimatedPosition(2),u,v);
+plot(robotByParticules.position(1),robotByParticules.position(2),strcat('k','o'))
+    [u,v] = pol2cart(robotByParticules.position(3),0.5);
+    quiver(robotByParticules.position(1),robotByParticules.position(2),u,v);
 
 if(nargin > 2)
     plot(robotPosition(1),robotPosition(2),strcat('k','*'))
@@ -58,7 +58,7 @@ rose(angles/180*pi)
 
 
 
-%plot(0,robotByParticules.estimatedPosition(3)*180/pi,strcat('k','o'))
+%plot(0,robotByParticules.position(3)*180/pi,strcat('k','o'))
 %plot(0,robotPosition(3)*180/pi,strcat('k','*'))    
 
  %ylim([-180 180])

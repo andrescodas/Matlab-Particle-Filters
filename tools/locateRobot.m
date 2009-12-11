@@ -9,7 +9,7 @@ if(nargin<8)
             if(nargin<5)
                 robotParticule = struct('position',[0 0 0],'weight',1/numberParticulesRobot);
                 particuleSet = repmat(robotParticule,1,numberParticulesRobot);
-                robotByParticules = struct('particuleSet',particuleSet,'estimatedPosition',[0 0 0]);
+                robotByParticules = struct('particuleSet',particuleSet,'position',[0 0 0]);
                 if(nargin<4)
                     inferingTags = [];
                     if(nargin < 3)

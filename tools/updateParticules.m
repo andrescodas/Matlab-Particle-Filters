@@ -1,4 +1,4 @@
-function [newParticuleSet estimatedPosition] = updateParticules(detectionModel,particuleSet,robotPosition,antenna,detectionBool,numberParticules,inertia)
+function [newParticuleSet position] = updateParticules(detectionModel,particuleSet,robotPosition,antenna,detectionBool,numberParticules,inertia)
 
 % figure(1)
 % hold off
@@ -57,7 +57,7 @@ end
 %      corrected = 0;
 %     end
     newParticuleSet  = resampleParticuleSetUnionPosition(newParticuleSet,numberParticules);
-    estimatedPosition = estimateTagPosition(newParticuleSet);
+    position = estimateTagPosition(newParticuleSet);
     
     %     printParticuleSet(newParticuleSet,'go')
 

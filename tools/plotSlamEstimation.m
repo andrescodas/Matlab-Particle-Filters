@@ -32,7 +32,7 @@ for j = 1:length(inferingTags)
         toPlot = inferingTags(j).particuleSet(k).position * rotationMatrix + translation;
         plot(toPlot(1),toPlot(2),strcat('g','.'));
     end
-    toPlot = inferingTags(j).estimatedPosition * rotationMatrix + translation;
+    toPlot = inferingTags(j).position * rotationMatrix + translation;
     plot(toPlot(1),toPlot(2),strcat('b','o'))
 
     m = searchTag(realTags,inferingTags(j).tagId);

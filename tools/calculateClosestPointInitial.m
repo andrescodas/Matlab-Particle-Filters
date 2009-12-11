@@ -13,7 +13,7 @@ else
 end
 
 if(~isempty(inferredTags))
-    translation = realTags(1).position - rotation(inferredTags(1).estimatedPosition,angle);
+    translation = realTags(1).position - rotation(inferredTags(1).position,angle);
     
   
 else

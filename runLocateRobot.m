@@ -1,7 +1,7 @@
 %
 % robotParticule = struct('position',[0 0 0],'weight',1/numberParticulesRobot);
 % particuleSet = repmat(robotParticule,1,numberParticulesRobot);
-% robotByParticules = struct('particuleSet',particuleSet,'estimatedPosition',[0 0 0]);
+% robotByParticules = struct('particuleSet',particuleSet,'position',[0 0 0]);
 
 clear all
 
@@ -20,7 +20,7 @@ movementSimulation= struct('robotPosition', [5 5 pi],'rflexPosition',[0 0 0]);
 
 robotParticule = struct('position',[0 0 0],'weight',1/numberParticulesRobot);
 particuleSet = repmat(robotParticule,1,numberParticulesRobot);
-robotByParticules = struct('particuleSet',particuleSet,'estimatedPosition',[0 0 0]);
+robotByParticules = struct('particuleSet',particuleSet,'position',[0 0 0]);
 
 
 
@@ -53,7 +53,7 @@ realTags(5) = tag;
 
 tagParticule = struct('position',realTags(1).position,'weight',1/numberParticulesTag);
 particuleSet = repmat(tagParticule,1,numberParticulesTag);
-tagByParticules = struct('tagId',realTags(1).tagId,'particuleSet',particuleSet,'estimatedPosition',realTags(1).position);
+tagByParticules = struct('tagId',realTags(1).tagId,'particuleSet',particuleSet,'position',realTags(1).position);
 
 inferingTags = repmat(tagByParticules,1,length(realTags));
 
@@ -61,7 +61,7 @@ for i = 2:length(realTags)
 
     tagParticule = struct('position',realTags(i).position,'weight',1/numberParticulesTag);
     particuleSet = repmat(tagParticule,1,numberParticulesTag);
-    tagByParticules = struct('tagId',realTags(i).tagId,'particuleSet',particuleSet,'estimatedPosition',realTags(i).position);
+    tagByParticules = struct('tagId',realTags(i).tagId,'particuleSet',particuleSet,'position',realTags(i).position);
 
     inferingTags(i) = tagByParticules;
 
@@ -82,7 +82,7 @@ for k = 1:1000%length(robotPositions)
             visiting = 1;
         end
 
-        vector = inferingTags(visiting).estimatedPosition - robotByParticules.estimatedPosition(1:2);
+        vector = inferingTags(visiting).position - robotByParticules.position(1:2);
 
         rotatingAngle = atan2(vector(2),vector(1)) + pi/2;
 

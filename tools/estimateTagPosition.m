@@ -1,9 +1,9 @@
-function [estimatedPosition] = estimateTagPosition(particuleSet)
+function [position] = estimateTagPosition(particuleSet)
 
-estimatedPosition = [0 0];
+position = [0 0];
 
 for i = 1:length(particuleSet)
-    estimatedPosition = estimatedPosition + particuleSet(i).position*particuleSet(i).weight;
+    position = position + particuleSet(i).position*particuleSet(i).weight;
 end
-%estimatedPosition = estimatedPosition/i;
+%position = position/i;
  

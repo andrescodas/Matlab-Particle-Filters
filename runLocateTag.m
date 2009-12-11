@@ -2,7 +2,7 @@
 inferingTags = [];
 % robotParticule = struct('position',[0 0 0],'weight',1/numberParticulesRobot);
 % particuleSet = repmat(robotParticule,1,numberParticulesRobot);
-% robotByParticules = struct('particuleSet',particuleSet,'estimatedPosition',[0 0 0]);
+% robotByParticules = struct('particuleSet',particuleSet,'position',[0 0 0]);
 close all
 
 movementSimulation= struct('robotPosition', [5 5 pi],'rflexPosition',[5 5 pi]);
@@ -41,7 +41,7 @@ realTags(5) = tag;
 
 robotParticule = struct('position',movementSimulation.robotPosition,'weight',1/numberParticulesRobot);
 particuleSet = repmat(robotParticule,1,numberParticulesRobot);
-robotByParticules = struct('particuleSet',particuleSet,'estimatedPosition',movementSimulation.robotPosition);
+robotByParticules = struct('particuleSet',particuleSet,'position',movementSimulation.robotPosition);
 
 
 
@@ -58,7 +58,7 @@ for k = 1:1000%length(robotPositions)
         end
          
 
-        vector = inferingTags(visiting).estimatedPosition - robotByParticules.estimatedPosition(1:2);
+        vector = inferingTags(visiting).position - robotByParticules.position(1:2);
 
         rotatingAngle = atan2(vector(2),vector(1)) + pi/2;
 
@@ -79,10 +79,10 @@ for k = 1:1000%length(robotPositions)
 
 %    robotByParticules = locateRobot(polarModel,detections,movementSimulation,inferingTags,robotByParticules,numberParticulesRobot,inertiaRobot,antennas);
     robotByParticules.particuleSet(1).position = movementSimulation.robotPosition;
-    robotByParticules.estimatedPosition = movementSimulation.robotPosition;
+    robotByParticules.position = movementSimulation.robotPosition;
 
     inferingTags = locateTagMod(polarModel,detections,inferingTags,robotByParticules,numberParticulesTag,inertiaTag,antennas);
                 
-    plotTagsEstimation(inferingTags,robotByParticules.estimatedPosition,realTags)
+    plotTagsEstimation(inferingTags,robotByParticules.position,realTags)
 
 end

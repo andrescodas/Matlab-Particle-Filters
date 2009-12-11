@@ -2,7 +2,7 @@
 inferingTags = [];
 % robotParticule = struct('position',[0 0 0],'weight',1/numberParticulesRobot);
 % particuleSet = repmat(robotParticule,1,numberParticulesRobot);
-% robotByParticules = struct('particuleSet',particuleSet,'estimatedPosition',[0 0 0]);
+% robotByParticules = struct('particuleSet',particuleSet,'position',[0 0 0]);
 close all
 
 movementSimulation= struct('robotPosition', [5 5 pi],'rflexPosition',[5 5 pi]);
@@ -10,7 +10,7 @@ movementSimulation= struct('robotPosition', [5 5 pi],'rflexPosition',[5 5 pi]);
 
 robotParticule = struct('position',[5 5 pi],'weight',1/numberParticulesRobot);
 particuleSet = repmat(robotParticule,1,numberParticulesRobot);
-robotByParticules = struct('particuleSet',particuleSet,'estimatedPosition',[5 5 pi]);
+robotByParticules = struct('particuleSet',particuleSet,'position',[5 5 pi]);
 
 
 antennas = 8;
@@ -61,7 +61,7 @@ for k = 1:1000%length(robotPositions)
            visiting = 1;
         end
         
-        vector = inferingTags(visiting).estimatedPosition - robotByParticules.estimatedPosition(1:2);
+        vector = inferingTags(visiting).position - robotByParticules.position(1:2);
 
         rotatingAngle = atan2(vector(2),vector(1)) + pi/2;
 

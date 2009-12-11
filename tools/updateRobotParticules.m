@@ -17,8 +17,8 @@ function newRobotByParticules = updateRobotParticules(robotByParticules,infering
 %      corrected = 0;
 %     end
       newParticuleSet = resampleParticuleSet(newParticuleSet,numberParticulesRobot);
-      estimatedPosition = estimateRobotPosition(newParticuleSet);
+      position = estimateRobotPosition(newParticuleSet);
 %     printParticuleSet(newParticuleSet,'go')
 
-     newRobotByParticules = struct('particuleSet',newParticuleSet,'estimatedPosition',estimatedPosition);
+     newRobotByParticules = struct('particuleSet',newParticuleSet,'position',position);
     

@@ -1,4 +1,7 @@
 function detections = rfidSimulation(robotPosition,tags,polarModel)
+%
+% detections = rfidSimulation(robotPosition,tags,polarModel)
+%
 
 antennas = 8;
 tagsLength = length(tags);

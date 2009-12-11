@@ -123,6 +123,10 @@ legend('Odometry','Odometry-RFID')
 
 
 
+cond = input('Plot Frames (1/0)');
+if( cond == 1 )
+
+       
 figure(1);
 f = getframe;
 frames = repmat(f,1,1000);
@@ -133,7 +137,7 @@ maxX = -inf;
 minY = inf;
 maxY = -inf;
 
-
+numToPlot = inf
 i = 1;
 file =strcat('afterOdometry',num2str(i),'.m');
 
@@ -159,11 +163,7 @@ figure(1);
 f = getframe;
 frames = repmat(f,1,numberOfFiles);
 
-numToPlot = inf;
-
-cond = input('Plot Frames (1/0)');
-if( cond == 1 )
-
+        
    figure()
     for i = 1:numberOfFiles
 
@@ -233,6 +233,9 @@ if( cond == 1 )
             %%[u,v] = pol2cart(simulations.pos(i,3),0.01);
             %%quiver(simulations(1).pos(j,1),simulations(1).pos(j,2),u,v,'r');
         end
+        
+        plot(positionsXM(i),positionsYM(i),'gd');
+        
 
         frames(i) = getframe;
 
