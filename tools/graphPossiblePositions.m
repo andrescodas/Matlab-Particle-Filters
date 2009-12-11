@@ -1,10 +1,30 @@
-%function [] = graphPossiblePositions(polarModel,detections,tags)
+function [] = graphPossiblePositions(detections,maxDistance,maxAngle,meanAngle,stepDistance,stepAngle,tags,polarModel)
 
-stepDistance = 0.1;
-stepAngle = pi/180*5;
-maxDistance = 10;
+if(nargin < 8)
+    load polarModel
+    if (nargin <  7)
+        tags = realTagsPosition();
+        if (nargin < 6)
+            stepAngle = pi/180*5;
+            if (nargin < 5)
+                stepDistance = 0.2;
+                if (nargin < 4)
+                    meanAngle = 0;
+                    if (nargin < 3)
+                        maxAngle = pi;%pi/180*30;
+                        if (nargin < 2)
+                            maxDistance = 5;
+                        end
+                    end
+                end
+            end
+        end
+    end
+end
 
-points = -ones(2*maxDistance/stepDistance+1,2*maxDistance/stepDistance+1,2*pi/stepAngle);
+
+
+points = -ones(2*maxDistance/stepDistance+1,2*maxDistance/stepDistance+1,2*maxAngle/stepAngle+1);
 
 
 
@@ -16,7 +36,7 @@ for x = -maxDistance:stepDistance:maxDistance
     for y = -maxDistance:stepDistance:maxDistance
         j = j+1;
         k = 0;
-        for t = stepAngle:stepAngle:2*pi
+        for t = meanAngle-maxAngle:stepAngle:meanAngle+maxAngle
             k = k +1;
 
             points(i,j,k) = getSimilarityProbability(detections,[x y t],tags,8,polarModel);
@@ -29,7 +49,7 @@ figure(1)
 
 pXY = -ones(2*maxDistance/stepDistance+1,2*maxDistance/stepDistance+1);
 
-p = -ones(1:2*pi/stepAngle);
+p = -ones(1,2*maxAngle/stepAngle+1);
 
 i=0;
 for x = -maxDistance:stepDistance:maxDistance
@@ -38,24 +58,24 @@ for x = -maxDistance:stepDistance:maxDistance
     for y = -maxDistance:stepDistance:maxDistance
         j = j+1;
 
-        p(1:2*pi/stepAngle) = points(i,j,:);
+        p(1:2*maxAngle/stepAngle+1) = points(i,j,:);
         pXY(i,j) = max(p);
 
     end
 end
 
-surf(-maxDistance:stepDistance:maxDistance,-maxDistance:stepDistance:maxDistance,pXY)
+surf(-maxDistance:stepDistance:maxDistance,-maxDistance:stepDistance:maxDistance,pXY')
 
 figure(2)
 
-pXT = -ones(2*maxDistance/stepDistance+1,2*pi/stepAngle);
-p = -ones(1:2*maxDistance/stepDistance+1);
+pXT = -ones(2*maxDistance/stepDistance+1,2*maxAngle/stepAngle+1);
+p = -ones(1,2*maxDistance/stepDistance+1);
 
 i = 0;
 for x = -maxDistance:stepDistance:maxDistance
     i = i+1;
     k = 0;
-    for t = stepAngle:stepAngle:2*pi
+    for t = meanAngle-maxAngle:stepAngle:meanAngle+maxAngle
         k = k +1;
 
         p(1:2*maxDistance/stepDistance+1) = points(i,:,k);
@@ -65,18 +85,18 @@ for x = -maxDistance:stepDistance:maxDistance
     end
 end
 
-surf(-maxDistance:stepDistance:maxDistance,stepAngle:stepAngle:2*pi,pXT)
+surf(-maxDistance:stepDistance:maxDistance,meanAngle-maxAngle:stepAngle:meanAngle+maxAngle,pXT')
 
 figure(3)
 
-pYT = -ones(2*maxDistance/stepDistance+1,2*pi/stepAngle);
-p = -ones(1:2*maxDistance/stepDistance+1);
+pYT = -ones(2*maxDistance/stepDistance+1,2*maxAngle/stepAngle+1);
+p = -ones(1,2*maxDistance/stepDistance+1);
 
 j = 0;
 for y = -maxDistance:stepDistance:maxDistance
     j = j+1;
     k = 0;
-    for t = stepAngle:stepAngle:2*pi
+    for t = meanAngle-maxAngle:stepAngle:meanAngle+maxAngle
         k = k +1;
 
         p(1:2*maxDistance/stepDistance+1) = points(:,j,k);
@@ -85,4 +105,4 @@ for y = -maxDistance:stepDistance:maxDistance
     end
 end
 
-surf(-maxDistance:stepDistance:maxDistance,stepAngle:stepAngle:2*pi,pYT)
+surf(-maxDistance:stepDistance:maxDistance,meanAngle-maxAngle:stepAngle:meanAngle+maxAngle,pYT')
