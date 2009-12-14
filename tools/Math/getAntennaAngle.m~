@@ -1,0 +1,16 @@
+function antennaAngle = getAntennaAngle(antennaNumber)
+
+
+double const ANTENNA_POSITION_RADIUS = 0.35;
+double const ANTENNA_POSITION_ANGLES[] = {4*PI/4,
+                                          3*PI/4,
+                                          2*PI/4,
+                                          1*PI/4,
+                                          0*PI/4,
+                                          7*PI/4,
+                                          6*PI/4,
+                                          5*PI/4
+                                         };
+
+
+antennaAngle = -2*pi/8*antennaNumber + pi;
