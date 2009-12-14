@@ -5,13 +5,15 @@ inferingTags = [];
 % robotByParticules = struct('particuleSet',particuleSet,'position',[0 0 0]);
 close all
 
+
+exploringRobotParticles = 0;
+
 movementSimulation= struct('robotPosition', [5 5 pi],'rflexPosition',[5 5 pi]);
 
 
 robotParticule = struct('position',[5 5 pi],'weight',1/numberParticulesRobot);
 particuleSet = repmat(robotParticule,1,numberParticulesRobot);
 robotByParticules = struct('particuleSet',particuleSet,'position',[5 5 pi]);
-
 
 antennas = 8;
 
@@ -81,7 +83,7 @@ for k = 1:1000%length(robotPositions)
 
     detections = rfidSimulation(movementSimulation.robotPosition,realTags,polarModel);
 
-    [fixedTagDetections,inferingTagDetections] = separeFixedInferingDetections(detections,fixedTags);
+    [fixedTagDetections,inferingTagDetections] = sortFixedInferingDetections(detections,fixedTags);
 
     robotByParticules = locateRobot(polarModel,fixedTagDetections,movementSimulation,fixedTags,robotByParticules,numberParticulesRobot,inertiaRobot,antennas);
 
@@ -104,9 +106,15 @@ for k = 1:1000%length(robotPositions)
     
     globalQuality = globalQuality/rp;
     
-    newSet1 = scaleParticuleSet(weightedTags,1/rp);
+    newSet1 = scaleParticuleSet(newInferingTags,1/rp);
 
-    
+    if(exploringRobotParticles == 0)
+        
+    elseif (exploringRobotParticles > length(robotByparticules.particulesSet))
+
+    else
+        
+    end
     
     
     
