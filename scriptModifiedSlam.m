@@ -67,7 +67,7 @@ for k = 1:1000%length(robotPositions)
             visiting = 1;
         end
 
-        vector = fixedTags(visiting).position - robotByParticules.position(1:2);
+        vector = fixedTags(visiting).position - movementSimulation.robotPosition(1:2);
 
         rotatingAngle = atan2(vector(2),vector(1)) + pi/2;
 
@@ -111,22 +111,19 @@ for k = 1:1000%length(robotPositions)
         %         toc
         %         display('---------------------')
 
-        
+
         if(quality>1)
             warning('quality > 1')
             warn = input('quality with strange value')
         else
-            display(strcat('quality',num2str(quality)))
+            display(strcat('quality = ',num2str(quality)))
         end
-
         inferingTags(it).particuleSet = resampleExplore(weightedTags.particuleSet,polarModel,tagItDetections,robotRadius,inertiaTag+(1-inertiaTag)*quality,robotByParticules.particuleSet,numberParticulesTag);
-
     end
 
     for nit =  1:length(newInferingTagsDetection)
         if(searchTag(inferingTags,newInferingTagsDetection(nit).tagId) == 0)
             newTagDetections = sortDetectionsByTagId(newInferingTagsDetection,newInferingTagsDetection(nit).tagId);
-
             particuleSet = resampleExplore([],polarModel,newTagDetections,robotRadius,0,robotByParticules.particuleSet,numberParticulesTag);
             inferingTags = [inferingTags struct('tagId',newInferingTagsDetection(nit).tagId,'particuleSet',particuleSet,'position',[-inf -inf])];
 
@@ -138,9 +135,6 @@ for k = 1:1000%length(robotPositions)
     end
 
 
-    % [angle,translation] = iterativeClosestPoint(realTags,inferingTags);
-
-   
     plotSlamEstimation(inferingTags,robotByParticules,movementSimulation.robotPosition,realTags)
 
 end

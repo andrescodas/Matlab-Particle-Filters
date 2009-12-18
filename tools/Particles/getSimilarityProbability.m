@@ -1,10 +1,10 @@
-function p = getSimilarityProbability(detections, robotPosition, inferingTags,antennas,polarDetectionModel,excludeDetection)
+function [p quality] = getSimilarityProbability(detections, robotPosition, inferingTags,antennas,polarDetectionModel,excludeDetection)
 
 varDetections = detections;
 
-
 p = 1;
 
+quality = 0;
 if(nargin < 6) % excludeDetection not defined
 
     for it = 1:length(inferingTags)
@@ -23,13 +23,19 @@ if(nargin < 6) % excludeDetection not defined
             else
                 p = p*(1 - likelihoodAntennaTag);
             end
+
             if(p == 0)
+                quality = 0;
                 return;
+
+            else
+                quality = quality + p;
             end
 
             varDetections = [varDetections(1:k-1) varDetections(k+1:length(varDetections))];
         end
     end
+    quality = quality/antennas/length(inferingTags);
 else
 
     for it = 1:length(inferingTags)
@@ -48,10 +54,20 @@ else
                 else
                     p = p*(1 - likelihoodAntennaTag);
                 end
+
+                if(p == 0)
+                    quality = 0;
+                    return;
+
+                else
+                    quality = quality + p;
+                end
+
             end
             varDetections = [varDetections(1:k-1) varDetections(k+1:length(varDetections))];
         end
     end
+    quality = quality/(antennas*length(inferingTags)-1);
 end
 
 

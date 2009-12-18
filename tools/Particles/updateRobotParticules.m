@@ -1,24 +1,23 @@
 function newRobotByParticules = updateRobotParticules(robotByParticules,inferingTags,detections,numberParticulesRobot,inertia,antennas,polarDetectionModel)
 
+[newParticuleSet,quality] = weightRobotParticules(robotByParticules.particuleSet,detections,inferingTags,antennas,polarDetectionModel);
 
-    newParticuleSet = weightRobotParticules(robotByParticules.particuleSet,detections,inferingTags,antennas,polarDetectionModel);
+quality = round(quality*10000)/10000;
 
-	[newParticuleSet,quality] = normalizeParticuleSet(newParticuleSet);
+newParticuleSet = normalizeParticuleSet(newParticuleSet);
+
+if(quality == 1)
     
-	quality = round(quality*10000)/10000;
-       
-     if(quality < 1)
-     
-     	explorationParticuleSet = newRobotParticules(polarDetectionModel,inferingTags,detections,numberParticulesRobot,antennas);
-        
-        newParticuleSet = mergeParticules(newParticuleSet,inertia+(1-inertia)*quality,explorationParticuleSet,(1-inertia)*(1-quality));
-     end
-%     if (corrected)
-%      corrected = 0;
-%     end
-      newParticuleSet = resampleParticuleSet(newParticuleSet,numberParticulesRobot);
-      position = estimateRobotPosition(newParticuleSet);
+elseif(quality > 1)
+    warning('There is a bug')
+else
+
+    newParticuleSet = resampleExploreRobot(newParticuleSet,polarDetectionModel,inertia+(1-inertia)*quality,inferingTags,detections,numberParticulesRobot,antennas);
+
+end
+
+position = estimateRobotPosition(newParticuleSet);
 %     printParticuleSet(newParticuleSet,'go')
 
-     newRobotByParticules = struct('particuleSet',newParticuleSet,'position',position);
-    
+newRobotByParticules = struct('particuleSet',newParticuleSet,'position',position);
+
