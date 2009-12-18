@@ -8,11 +8,6 @@ close all
 movementSimulation= struct('robotPosition', [5 5 pi],'rflexPosition',[5 5 pi]);
 
 
-robotParticule = struct('position',[5 5 pi],'weight',1/numberParticulesRobot);
-particuleSet = repmat(robotParticule,1,numberParticulesRobot);
-robotByParticules = struct('particuleSet',particuleSet,'position',[5 5 pi]);
-
-
 antennas = 8;
 
 numberParticulesRobot = 100;
@@ -20,6 +15,13 @@ numberParticulesTag = 500;
 
 inertiaRobot = 0.99;
 inertiaTag = 0.99;
+
+
+robotParticule = struct('position',[5 5 pi],'weight',1/numberParticulesRobot);
+particuleSet = repmat(robotParticule,1,numberParticulesRobot);
+robotByParticules = struct('particuleSet',particuleSet,'position',[5 5 pi]);
+
+
 
 load polarModel
 

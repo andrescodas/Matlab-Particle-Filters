@@ -18,5 +18,5 @@ end
 
     [newParticuleSet,quality] = normalizeParticuleSet(newParticuleSet);
     
-    quality = round(quality*10000)/10000;
+    quality = round(quality*100000)/100000;
        

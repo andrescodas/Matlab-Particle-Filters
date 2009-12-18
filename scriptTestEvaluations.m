@@ -1,5 +1,5 @@
 
-stepDistance = 0.1;
+stepDistance = 0.2;
 
 [likelihoodMatrixSquare,numEvaluationsMatrix] = getLikelihoodMatrixCartesian(evaluations,stepDistance);
 
@@ -23,8 +23,9 @@ if((reducedX ~= 0) && (reducedY ~= 0))
 end
 title('All Evaluations');
 
+toPlot = [4 6];
 
-for a = 0:7
+for a = toPlot
 
     eval = selectEvaluations(evaluations,'',a);
 

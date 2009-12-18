@@ -3,8 +3,8 @@ function [inGroup,outGroup] = sortDetectionsByTag(detections,tagGroup)
 inGroup = detections;
 outGroup = detections;
 
-inGroupConut = 0;
-outGroupConut = 0;
+inGroupCount = 0;
+outGroupCount = 0;
 
 currentTagId = 'zzz';
 
@@ -18,11 +18,14 @@ for j = 1:length(detections);
     end
 
     if (k ~= 0)
-        inGroupConut = inGroupConut + 1;
-        inGroup(inGroupConut) = detections(j);
+        inGroupCount = inGroupCount + 1;
+        inGroup(inGroupCount) = detections(j);
     else
-        outGroupConut = outGroupConut + 1;
-        outGroup(outGroupConut) = detections(j);
+        outGroupCount = outGroupCount + 1;
+        outGroup(outGroupCount) = detections(j);
     end
 
 end
+
+inGroup = inGroup(1:inGroupCount);
+outGroup = outGroup(1:outGroupCount);

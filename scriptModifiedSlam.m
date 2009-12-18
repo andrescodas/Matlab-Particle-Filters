@@ -5,23 +5,23 @@ inferingTags = [];
 % robotByParticules = struct('particuleSet',particuleSet,'position',[0 0 0]);
 close all
 
-
-exploringRobotParticles = 0;
+%exploringRobotParticles = 0;
 
 movementSimulation= struct('robotPosition', [5 5 pi],'rflexPosition',[5 5 pi]);
 
-
-robotParticule = struct('position',[5 5 pi],'weight',1/numberParticulesRobot);
-particuleSet = repmat(robotParticule,1,numberParticulesRobot);
-robotByParticules = struct('particuleSet',particuleSet,'position',[5 5 pi]);
-
 antennas = 8;
-
+robotRadius =0.35;
 numberParticulesRobot = 100;
-numberParticulesTag = 500;
+numberParticulesTag = 100;
+inertiaRobot = 0.95;
+inertiaTag = 0.98;
 
-inertiaRobot = 0.99;
-inertiaTag = 0.99;
+
+initialParticlesPosition = [0 0 0];
+
+robotParticule = struct('position',initialParticlesPosition,'weight',1/numberParticulesRobot);
+particuleSet = repmat(robotParticule,1,numberParticulesRobot);
+robotByParticules = struct('particuleSet',particuleSet,'position',initialParticlesPosition);
 
 load polarModel
 
@@ -48,24 +48,26 @@ tag.tagId = 'e';
 tag.position = [0 0];
 realTags(5) = tag;
 
+tag.tagId = 'f';
+tag.position = [5 5];
+realTags(6) = tag;
+
 fixedTags = realTags(1:4);
 
 piloMove = [0 0 0];
 
 visiting = 0;
-
 for k = 1:1000%length(robotPositions)
     display(strcat('Porcent of robotPositions = ',num2str(k/1000)))
 
-
-    if((rand < 0.5) && (~isempty(inferingTags)))
+    if((rand < 0.9) && (~isempty(fixedTags)))
 
         visiting = visiting + 1;
-        if(length(inferingTags)<visiting)
+        if(length(fixedTags)<visiting)
             visiting = 1;
         end
 
-        vector = inferingTags(visiting).position - robotByParticules.position(1:2);
+        vector = fixedTags(visiting).position - robotByParticules.position(1:2);
 
         rotatingAngle = atan2(vector(2),vector(1)) + pi/2;
 
@@ -83,44 +85,62 @@ for k = 1:1000%length(robotPositions)
 
     detections = rfidSimulation(movementSimulation.robotPosition,realTags,polarModel);
 
-    [fixedTagDetections,inferingTagDetections] = sortFixedInferingDetections(detections,fixedTags);
+    [fixedTagDetections,inferingTagDetections] = sortDetectionsByTag(detections,fixedTags);
 
+    %     tic
     robotByParticules = locateRobot(polarModel,fixedTagDetections,movementSimulation,fixedTags,robotByParticules,numberParticulesRobot,inertiaRobot,antennas);
 
-    newInferingTags = clearInferingTagsWeight(inferingTags);
+    %     display('---------------------')
+    %     display('Locate Robot')
+    %     toc
+    %     display('---------------------')
+    [knownInferingTagsDetection,newInferingTagsDetection] = sortDetectionsByTag(inferingTagDetections,inferingTags);
 
-    globalQuality = 0;
-    
-    for rp = 1:length(robotByParticules.particuleSet)
+    for it = 1:length(inferingTags)
 
+        tagItDetections = sortDetectionsByTag(knownInferingTagsDetection,inferingTags(it));
+        %         tic
         [weightedTags,quality] = weightNormalizeTags(   polarModel,...
-                                                        inferingTagDetections,...
-                                                        inferingTags,...
-                                                        robotByParticules.particuleSet(rp).position,...
-                                                        antennas);
-                                                    
-        newInferingTags = sumtagsWeight(weightedTags,newInferingTags);
-        
-        globalQuality = globalQuality + quality;
-    end
-    
-    globalQuality = globalQuality/rp;
-    
-    newSet1 = scaleParticuleSet(newInferingTags,1/rp);
+            tagItDetections,...
+            inferingTags(it),...
+            robotByParticules,...
+            antennas);
 
-    if(exploringRobotParticles == 0)
-        
-    elseif (exploringRobotParticles > length(robotByparticules.particulesSet))
+        %         display('---------------------')
+        %         display('Weight Normalize Tags')
+        %         toc
+        %         display('---------------------')
 
-    else
         
+        if(quality>1)
+            warning('quality > 1')
+            warn = input('quality with strange value')
+        else
+            display(strcat('quality',num2str(quality)))
+        end
+
+        inferingTags(it).particuleSet = resampleExplore(weightedTags.particuleSet,polarModel,tagItDetections,robotRadius,inertiaTag+(1-inertiaTag)*quality,robotByParticules.particuleSet,numberParticulesTag);
+
     end
-    
-    
-    
-    
+
+    for nit =  1:length(newInferingTagsDetection)
+        if(searchTag(inferingTags,newInferingTagsDetection(nit).tagId) == 0)
+            newTagDetections = sortDetectionsByTagId(newInferingTagsDetection,newInferingTagsDetection(nit).tagId);
+
+            particuleSet = resampleExplore([],polarModel,newTagDetections,robotRadius,0,robotByParticules.particuleSet,numberParticulesTag);
+            inferingTags = [inferingTags struct('tagId',newInferingTagsDetection(nit).tagId,'particuleSet',particuleSet,'position',[-inf -inf])];
+
+        end
+    end
+
+    for tagIndex = 1:length(inferingTags);
+        inferingTags(tagIndex).position = estimateTagPosition(inferingTags(tagIndex).particuleSet);
+    end
+
+
     % [angle,translation] = iterativeClosestPoint(realTags,inferingTags);
 
+   
     plotSlamEstimation(inferingTags,robotByParticules,movementSimulation.robotPosition,realTags)
 
 end

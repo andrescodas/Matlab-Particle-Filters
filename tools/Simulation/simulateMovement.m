@@ -1,11 +1,11 @@
 function movementSimulation = simulateMovement(piloMove,robotPosition,rflexPosition)
 
 
-ifa2a = 0.1;  % imprecisionFactorAxial2Axial
+ifa2a = 0.05;  % imprecisionFactorAxial2Axial
 ifa2t = 0.01; % imprecisionFactorAxial2Transversal
-ift2t = 0.1;  % imprecisionFactorTransversal2Transversal
+ift2t = 0.05;  % imprecisionFactorTransversal2Transversal
 ift2a = 0.01; % imprecisionFactorTransversal2Axial
-ifo = 0.05;   % imprecisionFactorOrientation
+ifo = pi/180*5;   % imprecisionFactorOrientation
 
 newRflexPosition = rflexPosition;
 

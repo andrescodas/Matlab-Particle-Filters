@@ -1,9 +1,24 @@
-function particuleSet = initStandardTagParticules(polarModel,numberParticules,detectionFromAntennas,robotRadius)
+function particuleSet = initStandardTagParticules(polarModel,numberParticules,detections,robotRadius)
+
+detectionFromAntennas = zeros(1,8);
+
+for d = 1:length(detections)
+    detectionFromAntennas(detections(d).antenna+1) = detections(d).detected;
+end
 
 numDetections = sum(detectionFromAntennas);
 
+
+
 tagParticule = struct('position',[-inf -inf],'weight',1);
 particuleSet = repmat(tagParticule,1,numberParticules*numDetections);
+
+
+if(numDetections == 0)
+    return
+end
+
+
 
 i = 0;
 for da = 0:length(detectionFromAntennas)-1

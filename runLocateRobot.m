@@ -5,7 +5,6 @@
 
 clear all
 
-
 antennas = 8;
 
 numberParticulesRobot = 100;
@@ -13,20 +12,13 @@ numberParticulesTag = 1;
 
 inertiaRobot = 0.95;
 
-
-
 movementSimulation= struct('robotPosition', [5 5 pi],'rflexPosition',[0 0 0]);
-
 
 robotParticule = struct('position',[0 0 0],'weight',1/numberParticulesRobot);
 particuleSet = repmat(robotParticule,1,numberParticulesRobot);
 robotByParticules = struct('particuleSet',particuleSet,'position',[0 0 0]);
 
-
-
-
 load polarModel
-
 
 tag = struct('tagId','xxx','position',[-inf -inf]);
 realTags = repmat(tag,1,5);
