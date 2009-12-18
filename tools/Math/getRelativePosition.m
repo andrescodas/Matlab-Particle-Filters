@@ -2,7 +2,7 @@ function [distance,angleRadians] =  getRelativePosition(robotPosition,tagPositio
 
 
 % TODO
-antennaRadius = 0.38;
+antennaRadius = 0.35;
 
 
 % Antenna direction relative to -->  center:  robot position , direction: global x axis direction
