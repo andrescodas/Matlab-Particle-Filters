@@ -32,7 +32,7 @@ if(plotBool)
     title('P(z = 1 | antennaPosition, TagPosition)')
 
     figure
-    surf((0:maxAngle-1)*stepAngle*180/pi,(0:(maxDistance-1))*stepDistance,newPolar);
+    surf((0:maxAngle-1)*stepAngle*180/pi,(0:(maxDistance-1))*stepDistance,newPolar,'EdgeColor','none');
 
     plotPolarModel(polarModel)
 
@@ -45,6 +45,21 @@ fprintf(fid,'%d %d %f %f\n',size(likelihoodMatrixPolar,1),size(likelihoodMatrixP
 for i = 1:size(likelihoodMatrixPolar,1);
     for j = 1:size(likelihoodMatrixPolar,2)
         fprintf(fid,'%f ',newPolarSmooth(i,j));
+    end
+    fprintf(fid,'\n');
+end
+
+fclose(fid);
+
+polarModel = getPositionLikelihoodModel(polarModel);
+
+
+fid = fopen(strcat(fileName,'_L.in'),'w');
+fprintf(fid,'%d %d %f %f\n',size(polarModel.positionLikelihood,1),size(polarModel.positionLikelihood,2),stepDistance,stepAngle);
+
+for i = 1:size(polarModel.positionLikelihood,1);
+    for j = 1:size(polarModel.positionLikelihood,2)
+        fprintf(fid,'%f ',polarModel.positionLikelihood(i,j));
     end
     fprintf(fid,'\n');
 end
@@ -79,7 +94,7 @@ if(plotBool)
     
     
     figure
-    surf((-floor(reducedX/2):floor(reducedX/2))*stepDistance,(-floor(reducedY/2):floor(reducedY/2))*stepDistance,newSquareSmooth');
+    surf((-floor(reducedX/2):floor(reducedX/2))*stepDistance,(-floor(reducedY/2):floor(reducedY/2))*stepDistance,newSquareSmooth','EdgeColor','none');
 
     xlabel('X coordinate(m)')
     ylabel('Y coordinate(m)')

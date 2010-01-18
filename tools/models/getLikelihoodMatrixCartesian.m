@@ -42,6 +42,9 @@ for k = 1:length(evaluations)
 
         detections(x+center,y+center).tested = detections(x+center,y+center).tested + 1;
         detections(x+center,y+center).detected = detections(x+center,y+center).detected + evaluation.detected;
+        
+        detections(x+center,-y+center).tested = detections(x+center,y+center).tested + 1;
+        detections(x+center,-y+center).detected = detections(x+center,y+center).detected + evaluation.detected;
     end
 end
 
@@ -88,7 +91,9 @@ if (nargout > 1)
     for i = 1:size(numEvaluationsMatrix,1)
         for j = 1:size(numEvaluationsMatrix,2)
 
-            if (detections(i,j).tested > 1)
+            if (detections(i,j).tested > 20)
+                numEvaluationsMatrix(i,j) = 20;
+            elseif (detections(i,j).tested > 0)
                 numEvaluationsMatrix(i,j) = detections(i,j).tested;
             end
         end
