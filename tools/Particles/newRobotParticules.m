@@ -46,3 +46,5 @@ if(numberDetected>0)
 end
 
 explorationParticuleSet = normalizeParticuleSet(explorationParticuleSet);
+
+explorationParticuleSet = resampleParticuleSet(explorationParticuleSet,numberParticulesRobot*numberDetected);

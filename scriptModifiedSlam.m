@@ -11,13 +11,13 @@ movementSimulation= struct('robotPosition', [5 5 pi],'rflexPosition',[5 5 pi]);
 
 antennas = 8;
 robotRadius =0.35;
-numberParticulesRobot = 100;
+numberParticulesRobot = 200;
 numberParticulesTag = 100;
 inertiaRobot = 0.95;
 inertiaTag = 0.98;
 
 
-initialParticlesPosition = [0 0 0];
+initialParticlesPosition = movementSimulation.robotPosition;
 
 robotParticule = struct('position',initialParticlesPosition,'weight',1/numberParticulesRobot);
 particuleSet = repmat(robotParticule,1,numberParticulesRobot);

@@ -12,7 +12,7 @@ while(1)
             lineCounter = lineCounter + 1;
         end
 end
-
+fclose(readingFile);
 totalLines = lineCounter;
 lineCounter = 0;
 
@@ -43,3 +43,4 @@ while(1)
         
     end
 end
+fclose(readingFile);
