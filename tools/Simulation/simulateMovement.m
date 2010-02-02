@@ -14,8 +14,8 @@ rflexCovariance = diag([ifa2a*abs(piloMove(1)) + ift2a*abs(piloMove(2)), ift2t*a
 rflexCovarianceSQRT = sqrt(rflexCovariance);
 
 
-uNoiseRobot = rflexCovarianceSQRT*randn(3,1)/10*0;
-uNoiseRflex = rflexCovarianceSQRT*randn(3,1)*0;
+uNoiseRobot = rflexCovarianceSQRT*randn(3,1)/10;
+uNoiseRflex = rflexCovarianceSQRT*randn(3,1);
 
 
 newRobotPosition = robotPosition + rotation(piloMove + uNoiseRobot',robotPosition(3)); 
