@@ -12,8 +12,8 @@ for j = 1:length(inferingTags)
     end
     plot(robotPosition(1),robotPosition(2),'rh')
 
-    xlim([-15 15])
-    ylim([-15 15])
+    xlim([-3 3])
+    ylim([-3 3])
 end
  
 for k = 1:length(robotByParticules.particuleSet)

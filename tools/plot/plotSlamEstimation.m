@@ -23,8 +23,8 @@ for j = 1:length(inferingTags)
     toPlot = inferingTags(j).particuleSet(1).position * rotationMatrix + translation;
 
     plot(toPlot(1),toPlot(2),strcat('g','.'));
-    xlim([-30 30])
-    ylim([-30 30])
+    xlim([-3 3])
+    ylim([-3 3])
     grid
     hold all;
 
