@@ -7,6 +7,7 @@ if nargin < 2
             plot(particuleSet(i).position(1),particuleSet(i).position(2),'b.');
             hold all;
         end
+   
 
     end
 
@@ -18,8 +19,8 @@ elseif nargin < 3
     for i = 1:length(particuleSet)
         if (particuleSet(i).weight > 0)
             plot(particuleSet(i).position(1),particuleSet(i).position(2),options);
-
         end
+
     end
 
 
@@ -52,3 +53,7 @@ elseif nargin < 4
     surf((-xiMax:xiMax)*stepDistance,(-yiMax:yiMax)*stepDistance,plotMatrix');
     
 end
+grid on
+
+position = estimateTagPosition(particuleSet);
+plot(position(1),position(2),'o')
