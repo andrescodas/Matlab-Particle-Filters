@@ -1,19 +1,16 @@
 function newParticuleSet = resampleExploreRobot(particuleSet,polarModel,inertia,tags,detections,numberParticules,antennas)
 
-if(inertia == 1)
-    newParticuleSet=particuleSet ;
-    return;
+
+particuleWeight = 1/numberParticules;
+newParticule = struct('position',[-inf -inf -inf],'weight',particuleWeight);
+newParticuleSet = repmat(newParticule,1,numberParticules);
+if(isempty(particuleSet))
+    makeResample = 0;
 else
-    particuleWeight = 1/numberParticules;
-    newParticule = struct('position',[-inf -inf -inf],'weight',particuleWeight);
-    newParticuleSet = repmat(newParticule,1,numberParticules);
-    if(isempty(particuleSet))
-        makeResample = 0;
-    else
-        makeResample = 1;
-        cumulativeParticuleSet = cumulativeWeights(particuleSet);
-    end
+    makeResample = 1;
+    cumulativeParticuleSet = cumulativeWeights(particuleSet);
 end
+
 
 makeExploration = 0;
 for td = 1:length(detections)
