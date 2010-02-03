@@ -1,4 +1,4 @@
-function [rfidData] = modifiedSlam(inferingTags,movementSimulations,detectionsList,initialParticlesPosition,numberParticulesRobot,numberParticulesTag,inertiaRobot,inertiaTag)
+function [posData,tagData] = modifiedSlam(inferingTags,movementSimulations,detectionsList,initialParticlesPosition,numberParticulesRobot,numberParticulesTag,inertiaRobot,inertiaTag,polarModel)
 
 antennas = 8;
 robotRadius =0.35;
@@ -7,23 +7,15 @@ robotParticule = struct('position',initialParticlesPosition,'weight',1/numberPar
 particuleSet = repmat(robotParticule,1,numberParticulesRobot);
 robotByParticules = struct('particuleSet',particuleSet,'position',initialParticlesPosition);
 
-load polarModel
-
-
-realTags = realTagsPosition(1);
-fixedTags = realTagsPosition(1);
-
-robotPath = getRobotPath();
+fixedTags = realTagsPosition(-1);
 
 totalSteps = length(movementSimulations);
 
-robotPositionData = zeros(totalSteps,3);
-rfidData = zeros(totalSteps,3);
+posData = zeros(totalSteps,3);
+tagData = zeros(totalSteps,2);
 
-piloMove = [0 0 0];
-
-visiting = 0;
 for k = 1:totalSteps%length(robotPositions)
+    
     display(strcat('Porcent of robotPositions = ',num2str(k/totalSteps)))
 
     movementSimulation = movementSimulations(k);
@@ -79,6 +71,7 @@ for k = 1:totalSteps%length(robotPositions)
         inferingTags(tagIndex).position = estimateTagPosition(inferingTags(tagIndex).particuleSet);
     end
     
-    rfidData(k,:) = robotByParticules.position;
+    posData(k,:) = robotByParticules.position;
+    tagData(k,:) = inferingTags(1).position;
 
 end
