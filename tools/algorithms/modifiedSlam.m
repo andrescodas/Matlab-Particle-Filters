@@ -20,7 +20,7 @@ for k = 1:totalSteps%length(robotPositions)
 
     movementSimulation = movementSimulations(k);
 
-    detections = detectionsList(k);
+    detections = detectionsList(k).detections;
  
     [fixedTagDetections,inferingTagDetections] = sortDetectionsByTag(detections,fixedTags);
 
@@ -57,21 +57,22 @@ for k = 1:totalSteps%length(robotPositions)
         end
         inferingTags(it).particuleSet = resampleExplore(weightedTags.particuleSet,polarModel,tagItDetections,robotRadius,inertiaTag+(1-inertiaTag)*quality,robotByParticules.particuleSet,numberParticulesTag);
     end
-
-    for nit =  1:length(newInferingTagsDetection)
-        if(searchTag(inferingTags,newInferingTagsDetection(nit).tagId) == 0)
-            newTagDetections = sortDetectionsByTagId(newInferingTagsDetection,newInferingTagsDetection(nit).tagId);
-            particuleSet = resampleExplore([],polarModel,newTagDetections,robotRadius,0,robotByParticules.particuleSet,numberParticulesTag);
-            inferingTags = [inferingTags struct('tagId',newInferingTagsDetection(nit).tagId,'particuleSet',particuleSet,'position',[-inf -inf])];
-
-        end
-    end
+% 
+%     for nit =  1:length(newInferingTagsDetection)
+%         if(searchTag(inferingTags,newInferingTagsDetection(nit).tagId) == 0)
+%             newTagDetections = sortDetectionsByTagId(newInferingTagsDetection,newInferingTagsDetection(nit).tagId);
+%             particuleSet = resampleExplore([],polarModel,newTagDetections,robotRadius,0,robotByParticules.particuleSet,numberParticulesTag);
+%             inferingTags = [inferingTags struct('tagId',newInferingTagsDetection(nit).tagId,'particuleSet',particuleSet,'position',[-inf -inf])];
+% 
+%         end
+%     end
 
     for tagIndex = 1:length(inferingTags);
-        inferingTags(tagIndex).position = estimateTagPosition(inferingTags(tagIndex).particuleSet);
+        inferingTags(tagIndex).position = estimateTagPosition(inferingTags(tagIndex).particuleSet);  %% only for one tag!
+        tagData(k,:) = inferingTags(1).position;
     end
     
     posData(k,:) = robotByParticules.position;
-    tagData(k,:) = inferingTags(1).position;
+  
 
 end
