@@ -25,12 +25,23 @@ for k = 1:totalSteps%length(robotPositions)
     [fixedTagDetections,inferingTagDetections] = sortDetectionsByTag(detections,fixedTags);
 
     %     tic
-    robotByParticules = locateRobot(polarModel,fixedTagDetections,movementSimulation,fixedTags,robotByParticules,numberParticulesRobot,inertiaRobot,antennas);
+
+    robotParticule = struct('position',movementSimulation.robotPosition,'weight',1);
+    particuleSet = repmat(robotParticule,1,1);
+    robotByParticules = struct('particuleSet',particuleSet,'position',movementSimulation.robotPosition);
+
+    
+ %   robotByParticules = locateRobot(polarModel,fixedTagDetections,movementSimulation,fixedTags,robotByParticules,numberParticulesRobot,inertiaRobot,antennas);
 
     %     display('---------------------')
     %     display('Locate Robot')
     %     toc
     %     display('---------------------')
+    
+    
+    
+    
+    
     [knownInferingTagsDetection,newInferingTagsDetection] = sortDetectionsByTag(inferingTagDetections,inferingTags);
 
     for it = 1:length(inferingTags)
@@ -57,15 +68,15 @@ for k = 1:totalSteps%length(robotPositions)
         end
         inferingTags(it).particuleSet = resampleExplore(weightedTags.particuleSet,polarModel,tagItDetections,robotRadius,inertiaTag+(1-inertiaTag)*quality,robotByParticules.particuleSet,numberParticulesTag);
     end
-% 
-%     for nit =  1:length(newInferingTagsDetection)
-%         if(searchTag(inferingTags,newInferingTagsDetection(nit).tagId) == 0)
-%             newTagDetections = sortDetectionsByTagId(newInferingTagsDetection,newInferingTagsDetection(nit).tagId);
-%             particuleSet = resampleExplore([],polarModel,newTagDetections,robotRadius,0,robotByParticules.particuleSet,numberParticulesTag);
-%             inferingTags = [inferingTags struct('tagId',newInferingTagsDetection(nit).tagId,'particuleSet',particuleSet,'position',[-inf -inf])];
-% 
-%         end
-%     end
+ 
+     for nit =  1:length(newInferingTagsDetection)
+         if(searchTag(inferingTags,newInferingTagsDetection(nit).tagId) == 0)
+             newTagDetections = sortDetectionsByTagId(newInferingTagsDetection,newInferingTagsDetection(nit).tagId);
+             particuleSet = resampleExplore([],polarModel,newTagDetections,robotRadius,0,robotByParticules.particuleSet,numberParticulesTag);
+             inferingTags = [inferingTags struct('tagId',newInferingTagsDetection(nit).tagId,'particuleSet',particuleSet,'position',[-inf -inf])];
+ 
+         end
+     end
 
     for tagIndex = 1:length(inferingTags);
         inferingTags(tagIndex).position = estimateTagPosition(inferingTags(tagIndex).particuleSet);  %% only for one tag!

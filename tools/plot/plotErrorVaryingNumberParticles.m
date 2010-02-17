@@ -1,12 +1,12 @@
-[positionsXM,positionsYM,positionsTM] = readPositionFile('../mocapPositionSet.txt');
+[positionsXM,positionsYM,positionsTM] = readPositionFile('/home/andres/simulation/mocapPositionSet.txt');
 positionsXMD = positionsXM - [0 positionsXM(1:(length((positionsXM))-1))];
 positionsYMD = positionsYM - [0 positionsYM(1:(length((positionsYM))-1))];
 positionsTMD = positionsTM - [0 positionsTM(1:(length((positionsTM))-1))];
 
-numdata = 1;
+numdata = 100;
 
 
-tests = 0:0.01:numdata;
+tests = 0:1:numdata;
 error = zeros(size(tests)) ;
 i = 1;
 for k = tests;
@@ -21,5 +21,7 @@ error(i) = mean(errorRF);
 i = i+1;
 end
 
-plot(tests,error,tests,error,'.');
-
+plot(tests/100,error);
+ylabel('Error Mean (m)')
+xlabel('Inertia_r')
+grid on

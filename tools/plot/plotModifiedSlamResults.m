@@ -2,7 +2,7 @@ close all
 clear all;
 figure(1)
 
-[positionsXM,positionsYM,positionsTM] = readPositionFile('../mocapPositionSet.txt');
+[positionsXM,positionsYM,positionsTM] = readPositionFile('/home/andres/simulation/mocapPositionSet.txt');
 
 %positionsXMD = positionsXM - [0 positionsXM(1:(length((positionsXM))-1))];
 %positionsYMD = positionsYM - [0 positionsYM(1:(length((positionsYM))-1))];
@@ -14,7 +14,7 @@ figure(1)
     xlim([-1.5 3])
     hold all
 
-[positionsXO,positionsYO,positionsTO] = readPositionFile('../rflexPositionSet.txt');
+[positionsXO,positionsYO,positionsTO] = readPositionFile('/home/andres/simulation/rflexPositionSet.txt');
 
     grid
     subplot(3,1,2)

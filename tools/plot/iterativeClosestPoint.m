@@ -1,4 +1,4 @@
-function [angle,translation] = iterativeClosestPoint(realTagsDisordered,inferredTags,angle,translation)
+function [angle,translation,fval] = iterativeClosestPoint(realTagsDisordered,inferredTags,angle,translation)
 
 realTags = repmat(realTagsDisordered(1),1,length(inferredTags));
 
@@ -24,3 +24,5 @@ x0 = fminunc(costFunc,x0,optimizationOptions);
 
 angle = x0(1);
 translation = x0(2:3);
+
+fval = meanDistances(realTags,inferredTags,angle,translation);

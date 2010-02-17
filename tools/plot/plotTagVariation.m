@@ -1,21 +1,24 @@
-numdata = 1000;
+numdata = 1;
 
 
-tests = 1:1:numdata;
+tests = 0:0.01:numdata;
 error = zeros(size(tests)) ;
 i = 1;
 
 for k = tests;
 
- %       if ( k == floor(k))
- %   [tagX,tagY] = readTagPositionFile(strcat('tagPositionSet',num2str(k,'%0.1f'),'.txt'));
- %       else
-    [tagX,tagY] = readTagPositionFile(strcat('tagPositionSet',num2str(k),'.txt'));
- %       end
+    if ( k == floor(k))
+        [tagX,tagY] = readTagPositionFile(strcat('tagPositionSet',num2str(k,'%0.1f'),'.txt'));
+    else
+        [tagX,tagY] = readTagPositionFile(strcat('tagPositionSet',num2str(k),'.txt'));
+    end
     errorTag = distanceMatlab( tagX-ones(size(tagX))*1.5,tagY-ones(size(tagY))*0.5);
     error(i) = mean(errorTag);
     i = i+1;
 
 end
 
-plot(tests,error,tests,error,'.');
+plot(tests,error);
+xlabel('n_t')
+ylabel('Error Mean (m)')
+grid on

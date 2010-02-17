@@ -1,4 +1,4 @@
-function [] = plotResults(robotPositions,rflexPositions,rfidPositions)
+function [] = plotResults(robotPositions,rflexPositions,rfidPositions,tagPos)
 
 
 robotPath = getRobotPath();
@@ -143,7 +143,36 @@ plot(abs(180/pi*angleWrap(positionsTO-positionsTM)))
 plot(abs(180/pi*angleWrap(positionsTRF-positionsTM)))
 grid on
 
-title('Error Comparison respect to Motion Capture System ')
 xlabel('Iteration Step')
 ylabel('Absolute angle error (degree)')
 legend('Odometry','Odometry-RFID')
+
+
+if (nargin >3)
+
+    positionsXT = tagPos(:,1);
+    positionsYT = tagPos(:,2);
+
+    tagRealPos = [1.5 0.5];
+
+    figure
+    plot(positionsXT,positionsYT,tagRealPos(1),tagRealPos(2),'k*')
+
+    title('Tag position Estimation')
+    xlabel('position (m)')
+    ylabel('position (m)')
+    legend('Estimations','Real Position')
+    grid on
+
+    figure
+    tagErrorX = positionsXT - tagRealPos(1)*ones(size(positionsXT));
+    tagErrorY = positionsYT - tagRealPos(2)*ones(size(positionsYT));
+    errorTag = distanceMatlab(tagErrorX,tagErrorY);
+    plot(errorTag);
+
+    xlabel('Iteration Step')
+    ylabel('Distance Between Real Position and Estimated Position (m)')
+    grid on
+
+
+end
